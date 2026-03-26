@@ -44,11 +44,12 @@
         <section class="viewer panel">
           <div class="viewer-toolbar">
             <div>
-              <p class="viewer-label">当前查看</p>
+              <p class="viewer-label">打开方式</p>
               <h2 id="current-title">暂无内容</h2>
-              <p id="current-meta" class="viewer-meta">请先发布一份 HTML 报告。</p>
+              <p id="current-meta" class="viewer-meta">请先选择一份 HTML 报告。</p>
             </div>
             <div class="viewer-actions">
+              <a id="open-report-current" class="button" href="#">打开完整 HTML</a>
               <a id="open-report" class="button secondary" href="#" target="_blank" rel="noreferrer">新标签打开</a>
               <a id="share-report" class="button" href="#">复制当前链接</a>
             </div>
@@ -59,7 +60,10 @@
             <p>运行发布脚本后，这里会自动出现可选择的历史内容。</p>
           </div>
 
-          <iframe id="report-frame" class="report-frame" title="直播总结预览"></iframe>
+          <div id="viewer-hint" class="viewer-hint" hidden>
+            <h3>像打开文件一样进入页面</h3>
+            <p>点“打开完整 HTML”后，会直接进入那份 HTML 页面本身。看完后用浏览器返回就能回到目录。</p>
+          </div>
         </section>
       </main>
     </div>
@@ -68,4 +72,3 @@
     <script src="./assets/app.js"></script>
   </body>
 </html>
-

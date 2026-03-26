@@ -8,10 +8,11 @@
   const reportList = document.getElementById("report-list");
   const currentTitle = document.getElementById("current-title");
   const currentMeta = document.getElementById("current-meta");
+  const openReportCurrent = document.getElementById("open-report-current");
   const openReport = document.getElementById("open-report");
   const shareReport = document.getElementById("share-report");
   const emptyState = document.getElementById("empty-state");
-  const reportFrame = document.getElementById("report-frame");
+  const viewerHint = document.getElementById("viewer-hint");
 
   const reportById = new Map(reports.map((report) => [report.id, report]));
 
@@ -63,11 +64,11 @@
     reportList.innerHTML = "";
 
     reports.forEach((report) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "report-card";
+      const link = document.createElement("a");
+      link.className = "report-card";
+      link.href = report.href;
       if (report.id === activeId) {
-        button.classList.add("active");
+        link.classList.add("active");
       }
 
       const title = document.createElement("p");
@@ -80,13 +81,10 @@
 
       const file = document.createElement("p");
       file.className = "report-file";
-      file.textContent = `文件：${report.originalName}`;
+      file.textContent = `文件：${report.originalName} · 点击直接打开`;
 
-      button.append(title, date, file);
-      button.addEventListener("click", function () {
-        selectReport(report.id);
-      });
-      reportList.appendChild(button);
+      link.append(title, date, file);
+      reportList.appendChild(link);
     });
   }
 
@@ -98,11 +96,11 @@
 
     currentTitle.textContent = report.title;
     currentMeta.textContent = `日期：${report.date} · 添加时间：${formatDate(report.addedAt)}`;
+    openReportCurrent.href = report.href;
     openReport.href = report.href;
     shareReport.dataset.href = buildShareHref(report.id);
-    reportFrame.src = report.href;
-    reportFrame.classList.add("visible");
     emptyState.hidden = true;
+    viewerHint.hidden = false;
     reportSelect.value = report.id;
     renderCards(report.id);
 
@@ -140,6 +138,7 @@
   renderOptions();
 
   if (!reports.length) {
+    openReportCurrent.href = "#";
     openReport.href = "#";
     shareReport.href = "#";
     return;
@@ -152,4 +151,3 @@
 
   selectReport(initialReportId);
 })();
-
