@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>直播总结归档</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Weekly Archive</p>
+          <h1>直播总结归档</h1>
+          <p class="hero-text">
+            每次新增一份 HTML，都保留历史版本，并在这里直接选择查看。
+          </p>
+        </div>
+        <div class="hero-meta">
+          <span class="meta-label">当前收录</span>
+          <strong id="report-count">0</strong>
+          <span class="meta-label">最近更新</span>
+          <strong id="generated-at">未生成</strong>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar panel">
+          <div class="panel-head">
+            <h2>选择内容</h2>
+            <p>支持切换查看历史 HTML 页面。</p>
+          </div>
+
+          <label class="field">
+            <span>快速选择</span>
+            <select id="report-select">
+              <option value="">暂无内容</option>
+            </select>
+          </label>
+
+          <div id="report-list" class="report-list"></div>
+        </aside>
+
+        <section class="viewer panel">
+          <div class="viewer-toolbar">
+            <div>
+              <p class="viewer-label">当前查看</p>
+              <h2 id="current-title">暂无内容</h2>
+              <p id="current-meta" class="viewer-meta">请先发布一份 HTML 报告。</p>
+            </div>
+            <div class="viewer-actions">
+              <a id="open-report" class="button secondary" href="#" target="_blank" rel="noreferrer">新标签打开</a>
+              <a id="share-report" class="button" href="#">复制当前链接</a>
+            </div>
+          </div>
+
+          <div id="empty-state" class="empty-state">
+            <h3>还没有任何 HTML 报告</h3>
+            <p>运行发布脚本后，这里会自动出现可选择的历史内容。</p>
+          </div>
+
+          <iframe id="report-frame" class="report-frame" title="直播总结预览"></iframe>
+        </section>
+      </main>
+    </div>
+
+    <script src="./data/reports.js"></script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
+
