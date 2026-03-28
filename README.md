@@ -8,6 +8,7 @@
 - 首页会自动更新成“可选择查看”的列表
 - 推送到 GitHub 后，GitHub Pages 会自动重新发布
 - 如果本地已经配置好 `origin` 远程仓库，发布脚本可以顺手帮你 `commit + push`
+- 可以安装“自动发布模式”，把 HTML 丢进固定文件夹后自动上传
 
 ## 目录结构
 
@@ -64,6 +65,13 @@ git push -u origin main
 
 ## 每周发布一次 HTML
 
+最简单的理解：
+
+- `~/Desktop/金融学习资料` 是你平时放原始 HTML 的地方
+- `publish.command` 是“手动上传按钮”
+- 网页地址会显示已经上传成功的 HTML
+- 只有“发布过”的文件，才会出现在网页里
+
 最省事的方法是双击根目录里的 `publish.command`，然后把 HTML 文件或整个报告目录拖进去。
 
 也可以直接用命令行：
@@ -98,6 +106,32 @@ python3 scripts/publish_report.py /绝对路径/报告目录 --entry report.html
 ```bash
 chmod +x publish.command
 ./publish.command
+```
+
+## 自动发布模式
+
+如果你不想每次都双击脚本，可以安装自动发布：
+
+- 桌面会出现一个固定入口：`~/Desktop/自动上传HTML`
+- 你只要把 `.html` 文件，或者整个报告目录，放进去
+- 大约 1 分钟内会自动发布并推送到 GitHub
+
+安装后，你的日常用法会变成：
+
+1. 把文件放进 `自动上传HTML`
+2. 等 1 分钟左右
+3. 打开网页首页
+4. 点击那份文件的名字，或者点“打开完整 HTML”
+
+日志位置：
+
+- `logs/auto_publish.log`
+- `logs/auto_publish.error.log`
+
+如果以后你想关闭自动发布，可以运行：
+
+```bash
+./scripts/uninstall_auto_publish_agent.sh
 ```
 
 ## 打开网页

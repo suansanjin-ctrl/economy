@@ -20,6 +20,14 @@ SITE_DIR = ROOT_DIR / "site"
 REPORTS_DIR = SITE_DIR / "reports"
 JSON_MANIFEST_PATH = SITE_DIR / "data" / "reports.json"
 JS_MANIFEST_PATH = SITE_DIR / "data" / "reports.js"
+GIT_ADD_PATHS = [
+    "site",
+    "scripts",
+    ".github",
+    "README.md",
+    ".gitignore",
+    "publish.command",
+]
 
 
 @dataclass
@@ -212,7 +220,7 @@ def commit_and_push(title: str, branch: str, skip_commit: bool, skip_push: bool)
         print("先运行：git init -b main")
         return
 
-    run_git_command(["add", "site", "scripts", ".github", "README.md", ".gitignore"])
+    run_git_command(["add", *GIT_ADD_PATHS])
 
     if skip_commit:
         print("提示：已按要求跳过 git commit。")
@@ -246,16 +254,22 @@ def commit_and_push(title: str, branch: str, skip_commit: bool, skip_push: bool)
         print(push.stderr.strip())
 
 
-def main() -> None:
-    args = parse_args()
-
-    source_path = Path(args.source).expanduser().resolve()
-    title = args.title or source_path.stem
-    date_value = normalize_date(args.date) if args.date else datetime.now().date().isoformat()
-    source_info = resolve_source_info(source_path, args.entry)
+def publish_source(
+    source_path: Path,
+    *,
+    entry: str | None = None,
+    title: str | None = None,
+    date_value: str | None = None,
+    description: str | None = None,
+    slug: str | None = None,
+) -> dict[str, Any]:
+    resolved_source_path = source_path.expanduser().resolve()
+    resolved_title = title or resolved_source_path.stem
+    resolved_date = normalize_date(date_value) if date_value else datetime.now().date().isoformat()
+    source_info = resolve_source_info(resolved_source_path, entry)
     manifest = load_manifest()
 
-    base_slug_parts = [date_value, args.slug or slugify(title or source_path.stem)]
+    base_slug_parts = [resolved_date, slug or slugify(resolved_title or resolved_source_path.stem)]
     base_slug = "-".join(part for part in base_slug_parts if part).strip("-")
     report_id = ensure_unique_slug(base_slug or "report", manifest.get("reports", []))
     destination_dir = REPORTS_DIR / report_id
@@ -263,9 +277,9 @@ def main() -> None:
 
     report_record = {
         "id": report_id,
-        "title": title,
-        "date": date_value,
-        "description": args.description or "",
+        "title": resolved_title,
+        "date": resolved_date,
+        "description": description or "",
         "href": f"reports/{report_id}/{entry_relative_path}",
         "originalName": source_info.original_name,
         "sourceType": source_info.source_type,
@@ -278,11 +292,27 @@ def main() -> None:
     manifest["reports"] = sort_reports(reports)
     save_manifest(manifest)
 
-    print(f"已发布：{title}")
-    print(f"目录：{destination_dir}")
+    return report_record
+
+
+def main() -> None:
+    args = parse_args()
+
+    source_path = Path(args.source)
+    report_record = publish_source(
+        source_path,
+        entry=args.entry,
+        title=args.title,
+        date_value=args.date,
+        description=args.description,
+        slug=args.slug,
+    )
+
+    print(f"已发布：{report_record['title']}")
+    print(f"目录：{REPORTS_DIR / report_record['id']}")
     print(f"入口：site/{report_record['href']}")
 
-    commit_and_push(title, args.branch, args.no_commit, args.no_push)
+    commit_and_push(report_record["title"], args.branch, args.no_commit, args.no_push)
 
 
 if __name__ == "__main__":

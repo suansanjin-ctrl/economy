@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
 .DS_Store
-
+logs/
+.auto_publish_state.json

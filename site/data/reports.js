@@ -1,6 +1,16 @@
 window.REPORTS_MANIFEST = {
-  "generatedAt": "2026-03-26T11:56:16+08:00",
+  "generatedAt": "2026-03-28T14:11:10+08:00",
   "reports": [
+    {
+      "id": "2026-03-28-laoyao-points-summary-v2",
+      "title": "laoyao_points_summary_v2",
+      "date": "2026-03-28",
+      "description": "",
+      "href": "reports/2026-03-28-laoyao-points-summary-v2/index.html",
+      "originalName": "laoyao_points_summary_v2.html",
+      "sourceType": "file",
+      "addedAt": "2026-03-28T14:11:10+08:00"
+    },
     {
       "id": "2026-03-26-report",
       "title": "金融学习资料示例",
